@@ -4,7 +4,7 @@ $ISLIVE = true;
 require_once ('Common.php');
 
 //Loads The data from the xml file
-$element = simplexml_load_file('folkets_sv_en_public.xml');
+$element = simplexml_load_file($XMLFile);
 
 $TABLE = $element->getName();
 //Load the XML Schema That was created using xml2rDB.php
