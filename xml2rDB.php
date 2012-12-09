@@ -4,6 +4,9 @@
 //This is The Variable where we will put the DB structure
 $dbStru = NULL;
 
+//Xml file and table name is somthing we need
+require_once ('Common.php');
+
 //Read the xml file with our data and create a XML Schema for it
 require_once ('xmlClassifier.php');
 
@@ -12,15 +15,14 @@ require_once ('xmlClassifier.php');
 require_once ('array2Querys.php');
 
 
-$TABLE = 'dictionary';
-echo file_put_contents($TABLE.'_DBshema.php_serialize',serialize($dbStru));
+file_put_contents($TABLE.'_DBshema.php_serialize',serialize($dbStru));
 
 
-/*Debug
+
 $Queries = array2Queries($dbStru);
 
 foreach ($Queries as $key => &$value) {
   echo($value."\n\n");
 }
-*/
+
 ?>
