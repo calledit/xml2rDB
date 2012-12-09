@@ -1,4 +1,6 @@
 <?php
+$TABLE = 'dictionary';
+$XMLFile = 'folkets_sv_en_public.xml';
 
 $data_db = "DAtabaseName";
 $SQL_user = "MysqlUser";
