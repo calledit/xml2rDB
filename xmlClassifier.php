@@ -4,7 +4,7 @@
 require_once ('Common.php');
 
 //Load our XML file
-$element = simplexml_load_file('folkets_sv_en_public.xml');
+$element = simplexml_load_file($XMLFile);
 
 //To get the name correctly in the structure
 $RootName = $element->getName();
