@@ -14,7 +14,7 @@ $input = new stdClass();
 $input->$RootName = $element;
 $LevelName = array();
 
-//unset the original xml data copy to same memmory
+//unset the original xml data copy to save memmory
 unset($element);
 
 //Go throgh the array and create a intermidiate format that is easy to handle
