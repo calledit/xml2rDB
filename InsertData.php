@@ -42,11 +42,10 @@ function InsertDataToDB(&$element,$level = 0,$Curent_Table = false,$OwnerRow = N
 	
 	$LevelName[] = $element->getName();
 	
-	
 	$Table_Holder = implode('_',$LevelName);
-	
 	$Curent_RowId = $OwnerRow;
-	
+
+	//if the current element has its own table. Some xml elements only get a column in its owners table.
 	if(isset($Schema[$Table_Holder])){
 		
 		$OwnerTableCollumn = $Curent_Table;
@@ -63,39 +62,34 @@ function InsertDataToDB(&$element,$level = 0,$Curent_Table = false,$OwnerRow = N
 			
 			$val = 'SET `'.$OwnerTableCollumn.'ID` = '.$OwnerRow;
 		}
-		if(!mysqli_query($SQL_Handle, 'INSERT INTO `'.$Curent_Table.'` '.$val))
+		//We create a mostly empty row in the table
+		if(!mysqli_query($SQL_Handle, 'INSERT INTO `'.$Curent_Table.'` '.$val)){
 				throw new Exception('Could not insert new row to the table: '.$Curent_Table."\nMYSQL: ".mysqli_error($SQL_Handle)."\n".$val);
+		}
 		
 		$Curent_RowId = mysqli_insert_id($SQL_Handle);
-		
-		//$Curent_RowId = rand(1000,10000);
-		
 		$collum_name = array();
 		
-		
-		//echo(' ('.$Curent_RowId.")".$OwIdText."\n");
 	}else{
 		$collum_name[] = $element->getName();
 	}
 	
 	
-	//echo(."\n");
 	$AtribsArr = array();
 	foreach($element->attributes() as $AtrKey => $AtrVal){
-			
-		
 		$collum_name[] = $AtrKey;
-		
 		$AtribsArr[implode('_',$collum_name)] = utf8_decode($AtrVal->__toString());
-		
 		array_pop($collum_name);
 	}
 	
-	if(!MySql_update($AtribsArr, array('_id' => $Curent_RowId), $Curent_Table))
+	//now that we know where this data is suposed to be in the DB we use MySql_update to insert it in the correct table at the correct row
+	if(!MySql_update($AtribsArr, array('_id' => $Curent_RowId), $Curent_Table)){
 		throw new Exception('Could not update row where _id = '.$Curent_RowId.' in the table: '.$Curent_Table."\nMYSQL: ".mysqli_error($SQL_Handle)."\n");
+	}
 		
 	
 	
+	//repeat the procedure for each child element
 	foreach($element as $key => $TmHold){
 		InsertDataToDB($TmHold, $level + 1, $Curent_Table, $Curent_RowId, $collum_name);	
 	}

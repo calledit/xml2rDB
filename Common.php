@@ -45,16 +45,18 @@ function MySql_update($Values, $Definers = NULL, $Table = 'Write Table Name Here
 	$query = 'UPDATE '.$Table.' SET ';
 	
 	//Add each value that sould be saved
-	foreach ($Values as $key => $value)
+	foreach ($Values as $key => $value){
 		$query .= '`' . mysqli_real_escape_string($SQL_Handle, $key) . '`'  . ' = \'' . mysqli_real_escape_string($SQL_Handle, $value) . '\', ';
+	}
 	$query = substr($query, 0, -2); //Remove the last ', '	
 	
 	$queryUpdEx = '';	
 	if(isset($Definers) && count($Definers) != 0){//if we have definers: add the where clause.
 		$queryUpdEx = " \nwhere \n";//lets phrase the definers
 		foreach ($Definers as $key => $value)
-			if(isset($value))
-				$queryUpdEx .= '`' . mysqli_real_escape_string($SQL_Handle, $key) . '`'  . ' = ' . floatval($value) . ' && ';
+			if(isset($value)){
+				$queryUpdEx .= '`' . mysqli_real_escape_string($SQL_Handle, $key) . '`'  . ' = \'' . mysqli_real_escape_string($SQL_Handle, $value) . '\' && ';
+			}
 		
 		$queryUpdEx = substr($queryUpdEx, 0, -4); // Remove the last " && "
 	}
