@@ -3,10 +3,17 @@
 $ISLIVE = true;
 require_once ('Common.php');
 
+$options = getopt("lf:");
+if(!isset($options['f'])){
+	echo "missing xml file argument \n";
+	exit;
+}
+$XMLFile = $options['f'];
+
 //Loads The data from the xml file
 $element = simplexml_load_file($XMLFile);
 
-$TABLE = $element->getName();
+//$TABLE = $element->getName();
 //Load the XML Schema That was created using xml2rDB.php
 require_once ('DataSchema.php');
 
@@ -56,10 +63,10 @@ function InsertDataToDB(&$element,$level = 0,$Curent_Table = false,$OwnerRow = N
 			
 			$val = 'SET `'.$OwnerTableCollumn.'ID` = '.$OwnerRow;
 		}
-		if(!mysql_query('INSERT INTO `'.$Curent_Table.'` '.$val,$SQL_Handle))
-				throw new Exception('Could not insert new row to the table: '.$Curent_Table."\nMYSQL: ".mysql_error($SQL_Handle)."\n".$val);
+		if(!mysqli_query($SQL_Handle, 'INSERT INTO `'.$Curent_Table.'` '.$val))
+				throw new Exception('Could not insert new row to the table: '.$Curent_Table."\nMYSQL: ".mysqli_error($SQL_Handle)."\n".$val);
 		
-		$Curent_RowId = mysql_insert_id($SQL_Handle);
+		$Curent_RowId = mysqli_insert_id($SQL_Handle);
 		
 		//$Curent_RowId = rand(1000,10000);
 		
@@ -85,7 +92,7 @@ function InsertDataToDB(&$element,$level = 0,$Curent_Table = false,$OwnerRow = N
 	}
 	
 	if(!MySql_update($AtribsArr, array('_id' => $Curent_RowId), $Curent_Table))
-		throw new Exception('Could not update row where _id = '.$Curent_RowId.' in the table: '.$Curent_Table."\nMYSQL: ".mysql_error($SQL_Handle)."\n");
+		throw new Exception('Could not update row where _id = '.$Curent_RowId.' in the table: '.$Curent_Table."\nMYSQL: ".mysqli_error($SQL_Handle)."\n");
 		
 	
 	

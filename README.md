@@ -1,11 +1,24 @@
-xml2rDB
+# xml 2 relational DB
 =======
 
-Convert xml data to MySQL 
+## Convert xml data to MySQL 
 
-The code here is far from butifull... you are welcome to clean it up, i don't feel like it.
+Takes a XML file as a input analyses it and converts it into a relational mysql database.
 
-1. Edit the Commons.php file so that the sql config is correct and the main tabel name and xmlfile is like you want it
-2. then run php5 xml2rDB.php
-3. Wait for it to spit out some sql querys it wont run them you have to run them yourself in Php my admin or mysql cli
-4. Run php5 InsertData.php which will connect to you database and insert the data from your xml file
+Example using https://folkets-lexikon.csc.kth.se/folkets/folkets_sv_en_public.xml
+
+```bash
+
+#Change settings for database conenction
+vi db.conf.php
+
+#analyse folkets_sv_en_public.xml and create tables in database
+php xml2rDB.php -l -f "../folkets_sv_en_public.xml"
+
+#fill the created database with values from the xml file
+php InsertData.php -f ../folkets_sv_en_public.xml
+
+```
+Resulting database shema:
+
+![resulting databse shema](https://raw.githubusercontent.com/calledit/xml2rDB/master/shema_dictionary.png)

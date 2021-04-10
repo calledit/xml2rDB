@@ -95,6 +95,7 @@ function ToDatabase($ArrStruct,$name = array()){
 					$tables[$curTable][$ParentTable.'ID']->Key = true;
 					$tables[$curTable][$ParentTable.'ID']->Type = 'int';
 					$tables[$curTable][$ParentTable.'ID']->Comment = 'Pointer To _id of Owner row in the table: '.$ParentTable;
+					$tables[$curTable][$ParentTable.'ID']->Restriction = $ParentTable;
 				}
 			}
 			$tables[$curTable][$key] = $value;

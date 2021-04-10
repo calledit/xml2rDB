@@ -1,20 +1,16 @@
 <?php
-$TABLE = 'dictionary';
-$XMLFile = 'folkets_sv_en_public.xml';
+include('db.conf.php');
 
-$data_db = "DAtabaseName";
-$SQL_user = "MysqlUser";
-$SQL_pass = "MysqlPassword";
-$SQL_host = "MysqlHost";
-
+$TABLE = 'datafile';
+$XMLFile = 'NOFILE';
 
 $SQL_Handle = 'NO_DB_CONNECTION';
 if(isset($ISLIVE) && $ISLIVE){
-  $SQL_Handle = @mysql_connect($SQL_host,$SQL_user,$SQL_pass);
+  $SQL_Handle = @mysqli_connect($SQL_host,$SQL_user,$SQL_pass);
 	if (!$SQL_Handle)die('Database connection failed');
 
 	//use the normal database
-	mysql_select_db($data_db,$SQL_Handle);
+	mysqli_select_db($SQL_Handle, $data_db);
 
 }
 class Database  {}
@@ -34,6 +30,7 @@ class Collumn  {
 	public $Signed = true;
 	public $Null = true;
 	public $Comment = '';
+	public $Restriction = '';
 	public $Key = false;
 	public $Path = '';
 }
@@ -49,7 +46,7 @@ function MySql_update($Values, $Definers = NULL, $Table = 'Write Table Name Here
 	
 	//Add each value that sould be saved
 	foreach ($Values as $key => $value)
-		$query .= '`' . mysql_real_escape_string($key) . '`'  . ' = \'' . mysql_real_escape_string($value) . '\', ';
+		$query .= '`' . mysqli_real_escape_string($SQL_Handle, $key) . '`'  . ' = \'' . mysqli_real_escape_string($SQL_Handle, $value) . '\', ';
 	$query = substr($query, 0, -2); //Remove the last ', '	
 	
 	$queryUpdEx = '';	
@@ -57,14 +54,14 @@ function MySql_update($Values, $Definers = NULL, $Table = 'Write Table Name Here
 		$queryUpdEx = " \nwhere \n";//lets phrase the definers
 		foreach ($Definers as $key => $value)
 			if(isset($value))
-				$queryUpdEx .= '`' . mysql_real_escape_string($key) . '`'  . ' = ' . floatval($value) . ' && ';
+				$queryUpdEx .= '`' . mysqli_real_escape_string($SQL_Handle, $key) . '`'  . ' = ' . floatval($value) . ' && ';
 		
 		$queryUpdEx = substr($queryUpdEx, 0, -4); // Remove the last " && "
 	}
 	
 	
 	$qr = $query.$queryUpdEx;
-	$query_res = mysql_query($qr,$SQL_Handle);
+	$query_res = mysqli_query($SQL_Handle, $qr);
 	
 
 		
