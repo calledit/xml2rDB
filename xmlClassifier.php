@@ -82,7 +82,7 @@ function ToDatabase($ArrStruct,$name = array()){
 		
 		if(is_object($value) && get_class($value) == 'Table'){
 			
-			array_push($name,$key);
+			array_push($name, xml_name_2sql_name($key));
 			$tables = array_merge($tables,ToDatabase($value, $name));
 			array_pop($name);
 		}else{
@@ -98,7 +98,7 @@ function ToDatabase($ArrStruct,$name = array()){
 					$tables[$curTable][$ParentTable.'_id']->Restriction = $ParentTable;
 				}
 			}
-			$tables[$curTable][$key] = $value;
+			$tables[$curTable][xml_name_2sql_name($key)] = $value;
 		}
 	}
 	

@@ -39,15 +39,15 @@ if(isset($ISLIVE) && $ISLIVE){
 function InsertDataToDB(&$element,$level = 0,$Curent_Table = false,$OwnerRow = NULL, $collum_name = array()){
   global $LevelName, $Schema, $SQL_Handle;
 	if($Curent_Table === false){
-		if(isset($Schema[$element->getName()])){
-			$Curent_Table = $element->getName();
+		if(isset($Schema[xml_name_2sql_name($element->getName())])){
+			$Curent_Table = xml_name_2sql_name($element->getName());
 		}else {
 			throw new Exception('The xml file does not seam to match the current schema(object "'.$element->getName().'" can not be found in the current schema schema). Load another file or change Schema/make a new schema and DB.');
 		}
 	}
 		
 	
-	$LevelName[] = $element->getName();
+	$LevelName[] = xml_name_2sql_name($element->getName());
 	
 	$Table_Holder = implode('_',$LevelName);
 	$Curent_RowId = $OwnerRow;
@@ -78,13 +78,13 @@ function InsertDataToDB(&$element,$level = 0,$Curent_Table = false,$OwnerRow = N
 		$collum_name = array();
 		
 	}else{
-		$collum_name[] = $element->getName();
+		$collum_name[] = xml_name_2sql_name($element->getName());
 	}
 	
 	
 	$AtribsArr = array();
 	foreach($element->attributes() as $AtrKey => $AtrVal){
-		$collum_name[] = $AtrKey;
+		$collum_name[] = xml_name_2sql_name($AtrKey);
 		$AtribsArr[implode('_',$collum_name)] = utf8_decode($AtrVal->__toString());
 		array_pop($collum_name);
 	}

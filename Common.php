@@ -36,6 +36,9 @@ class Collumn  {
 	public $Path = '';
 }
 
+function xml_name_2sql_name($str){
+	return(str_replace('-', '_', $str));
+}
 
 function MySql_update($Values, $Definers = NULL, $Table = 'Write Table Name Here'){
 	global $SQL_Handle;
