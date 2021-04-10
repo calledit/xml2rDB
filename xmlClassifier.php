@@ -89,13 +89,13 @@ function ToDatabase($ArrStruct,$name = array()){
 			if(!isset($tables[$curTable])){
 				$tables[$curTable] = array();//'_id' => 'int'
 				if($ParentTable != ''){
-					$tables[$curTable][$ParentTable.'ID'] =  new Collumn();
-					$tables[$curTable][$ParentTable.'ID']->Signed = false;
-					$tables[$curTable][$ParentTable.'ID']->Null = false;
-					$tables[$curTable][$ParentTable.'ID']->Key = true;
-					$tables[$curTable][$ParentTable.'ID']->Type = 'int';
-					$tables[$curTable][$ParentTable.'ID']->Comment = 'Pointer To _id of Owner row in the table: '.$ParentTable;
-					$tables[$curTable][$ParentTable.'ID']->Restriction = $ParentTable;
+					$tables[$curTable][$ParentTable.'_id'] =  new Collumn();
+					$tables[$curTable][$ParentTable.'_id']->Signed = false;
+					$tables[$curTable][$ParentTable.'_id']->Null = false;
+					$tables[$curTable][$ParentTable.'_id']->Key = true;
+					$tables[$curTable][$ParentTable.'_id']->Type = 'int';
+					$tables[$curTable][$ParentTable.'_id']->Comment = 'Pointer To _id of Owner row in the table: '.$ParentTable;
+					$tables[$curTable][$ParentTable.'_id']->Restriction = $ParentTable;
 				}
 			}
 			$tables[$curTable][$key] = $value;

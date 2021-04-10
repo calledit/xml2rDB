@@ -25,8 +25,15 @@ require_once ('DataSchema.php');
 
 $LevelName = array();
 
+if(isset($ISLIVE) && $ISLIVE){
+	$SQL_Handle->begin_transaction();
+}
+
 InsertDataToDB($element);
 
+if(isset($ISLIVE) && $ISLIVE){
+	$SQL_Handle->commit();
+}
 
 
 function InsertDataToDB(&$element,$level = 0,$Curent_Table = false,$OwnerRow = NULL, $collum_name = array()){
@@ -60,7 +67,7 @@ function InsertDataToDB(&$element,$level = 0,$Curent_Table = false,$OwnerRow = N
 			$OwnerTableCollumn = implode('_',$LevelName);
 			$LevelName[] = $poped;*/
 			
-			$val = 'SET `'.$OwnerTableCollumn.'ID` = '.$OwnerRow;
+			$val = 'SET `'.$OwnerTableCollumn.'_id` = '.$OwnerRow;
 		}
 		//We create a mostly empty row in the table
 		if(!mysqli_query($SQL_Handle, 'INSERT INTO `'.$Curent_Table.'` '.$val)){

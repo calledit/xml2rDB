@@ -38,6 +38,9 @@ file_put_contents($TABLE.'_DBshema.php_serialize',serialize($dbStru));
 
 $Queries = array2Queries($dbStru, $RELATIONS);
 
+if(isset($ISLIVE) && $ISLIVE){
+	$SQL_Handle->begin_transaction();//The transaction does not seam to do anything mabey table creation is not transactinal
+}
 foreach ($Queries as $key => &$value) {
 	if(isset($ISLIVE) && $ISLIVE){
 		mysqli_query($SQL_Handle, $value);
@@ -45,6 +48,9 @@ foreach ($Queries as $key => &$value) {
 	}else{
 		echo($value."\n\n");
 	}
+}
+if(isset($ISLIVE) && $ISLIVE){
+	$SQL_Handle->commit();
 }
 
 ?>

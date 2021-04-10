@@ -11,7 +11,8 @@ if(isset($ISLIVE) && $ISLIVE){
 
 	//use the normal database
 	mysqli_select_db($SQL_Handle, $data_db);
-
+	$SQL_Handle->autocommit(false);
+	mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 }
 class Database  {}
 
